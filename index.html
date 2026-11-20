@@ -102,6 +102,36 @@ button,input{font:inherit}.title{font-family:'Jua',sans-serif;font-weight:400}
 .greeting{background:#fffdf8dd;backdrop-filter:blur(8px);padding:9px 15px;border-radius:16px;box-shadow:var(--shadow);font-size:13px}
 .music{width:43px;height:43px;border:0;border-radius:50%;background:#fffdf8dd;box-shadow:var(--shadow);cursor:pointer;color:#6e6675}
 .music.off{opacity:.5}
+.music.on{opacity:1;background:#e7f4f9;color:#4f93b6;animation:musicPulse 1.6s ease-in-out infinite}
+@keyframes musicPulse{50%{box-shadow:0 0 0 7px #7eb8d822,var(--shadow)}}
+#music-pop{position:absolute;top:70px;right:22px;z-index:20;width:min(340px,calc(100vw - 24px));padding:16px 16px 14px;border-radius:24px;background:var(--paper);border:1px solid #fff;box-shadow:0 20px 50px #322a3a30;opacity:0;visibility:hidden;transform:translateY(-8px) scale(.97);transform-origin:top right;transition:.18s}
+#music-pop.open{opacity:1;visibility:visible;transform:none}
+#music-pop:before{content:"";position:absolute;top:-7px;right:15px;width:14px;height:14px;background:var(--paper);transform:rotate(45deg);border-radius:3px}
+.mp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.mp-head h3{font:19px 'Jua';margin:0}
+.mp-form{display:flex;gap:6px}
+.mp-form input{flex:1;min-width:0;border:1px solid var(--line);border-radius:13px;padding:10px 12px;outline:0;background:#fff;font-size:13px}
+.mp-form input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #7eb8d826}
+.mp-go{border:0;border-radius:13px;background:var(--blue);color:#fff;padding:0 14px;cursor:pointer}
+#mp-msg{min-height:16px;margin:6px 2px 8px;font-size:11.5px;color:var(--muted)}
+#mp-msg.err{color:#d4707f}
+.mp-screen{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#dceff7,#fff0f2 55%,#fff5d9);display:grid;place-items:center}
+.mp-screen .mp-empty{font:34px 'Jua';color:#fff;text-shadow:0 2px 8px #a99bd466}
+.mp-screen iframe,.mp-screen #yt-mount{position:absolute;inset:0;width:100%;height:100%;border:0}
+.mp-now{margin:10px 2px 8px;font-size:13px;line-height:1.35;word-break:break-all;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mp-ctrl{display:flex;align-items:center;gap:8px}
+.mp-ctrl button{width:36px;height:36px;border:0;border-radius:50%;background:#f1e9df;color:#625b65;cursor:pointer;flex:none;font-size:14px}
+.mp-ctrl #mp-toggle{background:var(--purple);color:#fff}
+.mp-ctrl #mp-loop.active{background:var(--blue2);color:#4f93b6;box-shadow:inset 0 0 0 2px var(--blue)}
+.mp-ctrl input[type=range]{flex:1;min-width:0;accent-color:var(--purple)}
+.mp-hist-title{margin:12px 2px 5px;font-size:11.5px;color:var(--muted)}
+#mp-hist{list-style:none;margin:0;padding:0;display:grid;gap:5px;max-height:122px;overflow:auto}
+#mp-hist li{display:flex;align-items:center;gap:6px;padding:7px 9px;background:#fff8f2;border-radius:12px;font-size:12px}
+#mp-hist li span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+#mp-hist li span:hover{color:var(--purple)}
+#mp-hist li button{border:0;background:none;color:#b3aab5;cursor:pointer;padding:0 3px}
+#mp-hist .mp-none{color:#aaa;justify-content:center;background:none}
+
 
 #timer-box{position:absolute;right:22px;bottom:58px;z-index:6;min-width:205px;padding:12px 15px;border-radius:20px;background:#fffdf8eF;backdrop-filter:blur(10px);box-shadow:var(--shadow)}
 .timer-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
@@ -309,6 +339,17 @@ button,input{font:inherit}.title{font-family:'Jua',sans-serif;font-weight:400}
   </div>
 </section>
 <div id="statusbar"><span class="status-dot"></span><span class="status-time" id="status-time">현재 시간 --:--:--</span></div>
+
+<div id="music-pop" role="dialog" aria-label="음악 플레이어" aria-hidden="true">
+  <div class="mp-head"><h3>🎵 음악 플레이어</h3><button class="close" id="mp-close" type="button" aria-label="닫기">×</button></div>
+  <form class="mp-form" id="mp-form"><input id="mp-input" type="text" placeholder="유튜브 링크를 붙여넣어 주세요" autocomplete="off"><button class="mp-go" type="submit">재생</button></form>
+  <div id="mp-msg">영상·쇼츠·재생목록 링크 모두 가능해요</div>
+  <div class="mp-screen"><div class="mp-empty">♫</div><div id="yt-mount"></div></div>
+  <div class="mp-now" id="mp-now">재생 중인 곡이 없어요</div>
+  <div class="mp-ctrl"><button id="mp-toggle" type="button" title="재생/일시정지">▶</button><button id="mp-loop" type="button" title="반복 재생">🔁</button><input id="mp-vol" type="range" min="0" max="100" value="60" aria-label="볼륨"></div>
+  <div class="mp-hist-title">최근 들은 곡</div>
+  <ul id="mp-hist"></ul>
+</div>
 </main>
 </div>
 
@@ -438,7 +479,116 @@ function refreshDayUI(){
   $('#event-add-btn').onclick=()=>{const d=$('#event-date').value,text=$('#event-text').value.trim();if(!d||!text)return;(events[d]||(events[d]=[])).push(text);$('#event-text').value='';save();renderCalendar()};
   save();
 }
-$('#music').onclick=e=>e.currentTarget.classList.toggle('off');
+// ===== 유튜브 음악 플레이어 =====
+(()=>{
+  const pop=$('#music-pop'),btn=$('#music'),input=$('#mp-input'),msg=$('#mp-msg'),now=$('#mp-now'),tog=$('#mp-toggle'),loopB=$('#mp-loop'),vol=$('#mp-vol'),histEl=$('#mp-hist');
+  const S={player:null,api:null,loop:!!store.get('musicLoop',false),vol:store.get('musicVol',60),hist:store.get('musicHist',[]),cur:null,playing:false};
+  vol.value=S.vol;loopB.classList.toggle('active',S.loop);
+  input.value=store.get('musicLast','');
+  const say=(t,err)=>{msg.textContent=t;msg.classList.toggle('err',!!err)};
+  const isOpen=()=>pop.classList.contains('open');
+  const openPop=()=>{pop.classList.add('open');pop.setAttribute('aria-hidden','false');renderHist();setTimeout(()=>{if(!S.cur)input.focus()},180)};
+  const closePop=()=>{pop.classList.remove('open');pop.setAttribute('aria-hidden','true')};
+  btn.onclick=e=>{e.stopPropagation();isOpen()?closePop():openPop()};
+  $('#mp-close').onclick=closePop;
+  document.addEventListener('click',e=>{if(isOpen()&&!pop.contains(e.target)&&!btn.contains(e.target))closePop()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen())closePop()});
+  const sync=()=>{btn.classList.toggle('off',!S.playing);btn.classList.toggle('on',S.playing);tog.textContent=S.playing?'❚❚':'▶'};
+
+  // 링크 해석: 영상 ID / 재생목록 ID 추출
+  function parseYT(raw){
+    raw=(raw||'').trim();if(!raw)return null;
+    if(/^[\w-]{11}$/.test(raw))return{v:raw};
+    let u;try{u=new URL(/^https?:\/\//i.test(raw)?raw:'https://'+raw)}catch(e){return null}
+    const h=u.hostname.replace(/^(www\.|m\.|music\.)/,''),parts=u.pathname.split('/').filter(Boolean);
+    let v=null;const list=u.searchParams.get('list');
+    if(h==='youtu.be')v=parts[0];
+    else if(h==='youtube.com'||h==='youtube-nocookie.com'){
+      v=u.searchParams.get('v');
+      if(!v&&['shorts','embed','live','v'].includes(parts[0]))v=parts[1];
+      if(!v&&parts[0]==='playlist'&&!list)return null;
+    }else return null;
+    if(v&&!/^[\w-]{11}$/.test(v))v=null;
+    if(!v&&!list)return null;
+    return v?{v}:{list};
+  }
+  const keyOf=sp=>sp.v?'v:'+sp.v:'l:'+sp.list;
+
+  function loadAPI(){
+    if(S.api)return S.api;
+    S.api=new Promise((res,rej)=>{
+      if(window.YT&&YT.Player)return res();
+      const prev=window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady=()=>{prev&&prev();res()};
+      const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>{S.api=null;rej(new Error('api'))};
+      document.head.appendChild(sc);
+    });
+    return S.api;
+  }
+  function onState(e){
+    const st=e.data;
+    if(st===1){
+      S.playing=true;
+      let d={};try{d=S.player.getVideoData()||{}}catch(_){}
+      if(d.title){now.textContent=d.title;S.cur.title=d.title;remember(S.cur)}
+      say('재생 중이에요 ♪');
+    }else if(st===2){S.playing=false;say('일시정지했어요')}
+    else if(st===3){say('불러오는 중…')}
+    else if(st===0){
+      S.playing=false;
+      if(S.loop&&!S.cur.list){try{S.player.seekTo(0);S.player.playVideo()}catch(_){}}
+    }
+    sync();
+  }
+  function onErr(e){
+    S.playing=false;sync();
+    const c=e.data;
+    say(c===101||c===150||c===153?'이 영상은 퍼가기가 막혀 있어서 여기서 재생할 수 없어요. 다른 링크를 넣어주세요.':c===100?'삭제되었거나 비공개인 영상이에요.':c===2||c===5?'링크를 다시 확인해 주세요.':'재생 중 문제가 생겼어요. 잠시 뒤 다시 시도해 주세요.',true);
+    if(c===153)say('재생 환경 문제예요(파일을 더블클릭해서 연 경우 이럴 수 있어요). 웹에 올려서 열면 재생돼요.',true);
+  }
+  function remember(sp){
+    const k=keyOf(sp);
+    S.hist=[{...sp,title:sp.title||''},...S.hist.filter(h=>keyOf(h)!==k)].slice(0,6);
+    store.set('musicHist',S.hist);renderHist();
+  }
+  function renderHist(){
+    histEl.innerHTML=S.hist.length?S.hist.map((h,i)=>`<li><span data-i="${i}" title="${escape(h.title||'')}">${h.list&&!h.v?'📃 ':'♪ '}${escape(h.title||(h.v?'https://youtu.be/'+h.v:'재생목록'))}</span><button data-del="${i}" type="button" aria-label="삭제">×</button></li>`).join(''):'<li class="mp-none">아직 없어요</li>';
+  }
+  histEl.addEventListener('click',e=>{
+    const d=e.target.closest('[data-del]');
+    if(d){S.hist.splice(+d.dataset.del,1);store.set('musicHist',S.hist);renderHist();return}
+    const sp=e.target.closest('[data-i]');
+    if(sp){const h=S.hist[+sp.dataset.i];input.value=h.v?'https://youtu.be/'+h.v:'https://www.youtube.com/playlist?list='+h.list;play(h.v?{v:h.v}:{list:h.list})}
+  });
+
+  async function play(sp){
+    S.cur={...sp};store.set('musicLast',input.value.trim());
+    now.textContent='불러오는 중…';say('불러오는 중…');
+    try{await loadAPI()}catch(e){say('유튜브에 연결할 수 없어요. 인터넷 연결을 확인해 주세요.',true);now.textContent='재생 중인 곡이 없어요';return}
+    if(!S.player){
+      S.player=new YT.Player('yt-mount',{width:'100%',height:'100%',videoId:sp.v||undefined,
+        playerVars:{autoplay:1,playsinline:1,rel:0,modestbranding:1,...(sp.list?{listType:'playlist',list:sp.list}:{})},
+        events:{onReady:ev=>{ev.target.setVolume(S.vol);if(sp.list)ev.target.setLoop(S.loop);ev.target.playVideo()},onStateChange:onState,onError:onErr}});
+    }else{
+      S.player.setVolume(S.vol);
+      if(sp.list){S.player.loadPlaylist({listType:'playlist',list:sp.list});S.player.setLoop(S.loop)}
+      else S.player.loadVideoById(sp.v);
+    }
+  }
+  $('#mp-form').onsubmit=e=>{
+    e.preventDefault();
+    const sp=parseYT(input.value);
+    if(!sp){say('유튜브 링크가 아닌 것 같아요. 다시 확인해 주세요.',true);input.focus();return}
+    play(sp);
+  };
+  tog.onclick=()=>{
+    if(!S.player||!S.cur){const sp=parseYT(input.value);if(sp)play(sp);else say('먼저 유튜브 링크를 넣어주세요.',true);return}
+    try{S.playing?S.player.pauseVideo():S.player.playVideo()}catch(_){}
+  };
+  loopB.onclick=()=>{S.loop=!S.loop;store.set('musicLoop',S.loop);loopB.classList.toggle('active',S.loop);try{if(S.cur&&S.cur.list)S.player.setLoop(S.loop)}catch(_){}say(S.loop?'반복 재생 켜짐':'반복 재생 꺼짐')};
+  vol.oninput=()=>{S.vol=+vol.value;store.set('musicVol',S.vol);try{S.player&&S.player.setVolume(S.vol)}catch(_){}};
+  renderHist();sync();
+})();
 function finish(){running=false;clearInterval(tickId);clearInterval(sceneId);cat.classList.remove('walking','eating');$('#timer-start').textContent='산책 시작';store.set('walkCount',store.get('walkCount',0)+1);store.set('todayMin',store.get('todayMin',0)+minutes);$('#timer-label').textContent='도착 완료';$('#timer-time').textContent=destination;clearInterval(clockId);showArrival(destination);clockId=setInterval(clock,1000);setTimeout(()=>{$('#arrival-scene').className=''},4200)}
 function showArrival(name){const scene=$('#arrival-scene');if(!scene)return;scene.className=name==='사범관'?'arrival-sabum':name==='사회과학관'?'arrival-soc':'arrival-art';$('#arrival-building-name').textContent=name;$('#arrival-label').textContent=name+' 도착!';void scene.offsetWidth;scene.classList.add('show')}
 })();
