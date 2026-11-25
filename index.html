@@ -135,7 +135,7 @@ button,input{font:inherit}.title{font-family:'Jua',sans-serif;font-weight:400}
 
 #timer-box{position:absolute;right:22px;bottom:58px;z-index:6;min-width:205px;padding:12px 15px;border-radius:20px;background:#fffdf8eF;backdrop-filter:blur(10px);box-shadow:var(--shadow)}
 .timer-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
-#timer-time{font:28px 'Jua';margin:3px 0 7px}.ctrl{display:flex;gap:7px}.ctrl button{border:0;border-radius:11px;padding:7px 12px;background:var(--blue);color:white;cursor:pointer}.ctrl #timer-reset{background:#eee6dc;color:#665f67}.ctrl .ctest{background:#d9cfe9;color:#5d526d;font-size:12px}
+#timer-time{font:28px 'Jua';margin:3px 0 7px}.ctrl{display:flex;gap:7px}.ctrl button{border:0;border-radius:11px;padding:7px 12px;background:var(--blue);color:white;cursor:pointer}.ctrl #timer-reset{background:#eee6dc;color:#665f67}
 
 #modal-overlay{position:fixed;inset:0;background:#453e4866;backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:30;padding:18px}
 #modal-overlay.open{display:flex}
@@ -188,8 +188,6 @@ button,input{font:inherit}.title{font-family:'Jua',sans-serif;font-weight:400}
 .memo{min-height:120px;background-image:radial-gradient(#bfc2ba 1px,transparent 1px);background-size:39px 36px}
 .review{margin-top:18px;border-top:2px solid #adb0a8;padding-top:8px;font-size:11px;letter-spacing:4px}
 .review-box{height:105px;border-bottom:2px solid #adb0a8}
-.test-row{display:flex;justify-content:flex-end;margin-top:12px}
-.test-btn{border:0;border-radius:10px;background:#d9cfe9;color:#5d526d;padding:8px 12px;cursor:pointer;font-size:12px}
 .walk-finished{text-align:center;padding:16px 8px;color:#777}
 .walk-finished .treat-icon{font-size:34px;margin-bottom:5px}
 @media(max-width:650px){.planner-columns{grid-template-columns:1fr;gap:20px}.planner{padding:14px}.planner-grid{height:260px}.plan-row{grid-template-columns:70px 1fr 24px}}
@@ -312,6 +310,27 @@ button,input{font:inherit}.title{font-family:'Jua',sans-serif;font-weight:400}
 
 
 .plan-row.is-done .ptask{text-decoration:line-through;opacity:.48}.plan-row.is-done .ptime{opacity:.55}.cal-study{font-size:9px;color:var(--p-accent);font-weight:700;margin-top:2px}
+
+/* 이스터에그: 만든이들 */
+.logo{cursor:pointer}.logo img{transition:transform .25s cubic-bezier(.3,1.6,.5,1)}.logo:hover img{transform:scale(1.06) rotate(-3deg)}.logo:active img{transform:scale(.92)}
+#credits-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:18px;background:#453e4866;backdrop-filter:blur(5px);opacity:0;visibility:hidden;transition:.25s}
+#credits-overlay.open{opacity:1;visibility:visible}
+.credits-card{position:relative;width:min(380px,92vw);padding:30px 26px 24px;border-radius:28px;background:linear-gradient(#fffdf8,#fff6ea);border:1px solid #fff;box-shadow:0 25px 60px #322a3a40;text-align:center;overflow:hidden;transform:translateY(18px) scale(.9);transition:.35s cubic-bezier(.3,1.5,.5,1)}
+#credits-overlay.open .credits-card{transform:none}
+.credits-card:before{content:"";position:absolute;inset:0 0 auto;height:8px;background:repeating-linear-gradient(90deg,var(--blue) 0 25%,var(--yellow) 25% 50%,var(--pink) 50% 75%,var(--purple) 75% 100%)}
+.credits-card .c-paw{font-size:26px;animation:bob 1.6s ease-in-out infinite;display:inline-block}
+.credits-card h2{font:26px 'Jua';margin:4px 0 2px}
+.credits-card .c-team{display:inline-block;margin:6px 0 18px;padding:5px 18px;border-radius:999px;background:var(--blue2);color:#4f93b6;font:18px 'Jua';letter-spacing:3px}
+.c-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;text-align:left}
+.c-list li{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;background:#fff;box-shadow:0 4px 12px #5a4a3a10;opacity:0;transform:translateY(8px)}
+#credits-overlay.open .c-list li{animation:cIn .45s cubic-bezier(.3,1.4,.5,1) forwards}
+#credits-overlay.open .c-list li:nth-child(1){animation-delay:.12s}#credits-overlay.open .c-list li:nth-child(2){animation-delay:.22s}#credits-overlay.open .c-list li:nth-child(3){animation-delay:.32s}
+@keyframes cIn{to{opacity:1;transform:none}}
+.c-ico{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:18px}
+.c-list li:nth-child(1) .c-ico{background:#fdeec8}.c-list li:nth-child(2) .c-ico{background:#fbdde3}.c-list li:nth-child(3) .c-ico{background:#dceff7}
+.c-role{font-size:11.5px;color:var(--muted)}.c-who{font-size:14px;line-height:1.35}.c-who b{font:16px 'Jua';margin-left:4px}
+.c-close{margin-top:18px;border:0;border-radius:13px;padding:8px 22px;background:var(--purple);color:#fff;cursor:pointer;font-size:13px}
+.c-close:hover{filter:brightness(1.07)}
 </style>
 </head>
 <body>
@@ -335,7 +354,7 @@ button,input{font:inherit}.title{font-family:'Jua',sans-serif;font-weight:400}
   <div id="timer-box">
     <div class="timer-head"><span id="timer-label">남은 시간</span></div>
     <div id="timer-time">30:00</div>
-    <div class="ctrl"><button id="timer-start">산책 시작</button><button id="timer-test" class="ctest">테스트 10초</button></div>
+    <div class="ctrl"><button id="timer-start">산책 시작</button></div>
   </div>
 </section>
 <div id="statusbar"><span class="status-dot"></span><span class="status-time" id="status-time">현재 시간 --:--:--</span></div>
@@ -357,6 +376,17 @@ button,input{font:inherit}.title{font-family:'Jua',sans-serif;font-weight:400}
   <div class="modal" id="modal"></div>
 </div>
 
+<div id="credits-overlay" aria-hidden="true"><div class="credits-card" role="dialog" aria-label="만든이들">
+  <span class="c-paw">🐾</span>
+  <h2>만든이들</h2>
+  <div class="c-team">王조</div>
+  <ul class="c-list">
+    <li><span class="c-ico">👑</span><div><div class="c-role">리더</div><div class="c-who">영어교육과 26 <b>안예빈</b></div></div></li>
+    <li><span class="c-ico">🎨</span><div><div class="c-role">일러스트</div><div class="c-who">미술교육과 26 <b>김지아</b></div></div></li>
+    <li><span class="c-ico">💻</span><div><div class="c-role">소프트웨어 코딩</div><div class="c-who">경영학부 26 <b>전시연</b></div></div></li>
+  </ul>
+  <button class="c-close" type="button">닫기</button>
+</div></div>
 <script>
 (()=> {
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
@@ -387,7 +417,7 @@ $$('.fish-btn').forEach(btn=>btn.onclick=()=>{
    <button class="walk-option" data-min="25"><strong>사범관</strong><span>25분</span></button>
    <button class="walk-option" data-min="45"><strong>사회과학관</strong><span>45분</span></button>
    <button class="walk-option" data-free="1"><strong>미술∙디자인관</strong><span>자유 지정</span></button>
- </div><div class="test-row"><button class="test-btn" id="walk-test">테스트 10초</button></div><div id="walk-note"></div>`);
+ </div><div id="walk-note"></div>`);
    modal.querySelectorAll('.walk-option').forEach(b=>b.onclick=()=>{
      if(b.dataset.free){destination='미술∙디자인관';modal.querySelector('.walk-options').innerHTML=`<div style="grid-column:1/-1"><div class="free-form"><input id="free-hour" type="number" min="0" max="99" value="0" placeholder="시"><span>시</span><input id="free-minute" type="number" min="0" max="59" value="0" placeholder="분"><span>분</span><button class="primary" id="free-go">시작</button></div></div>`;modal.querySelector('#free-go').onclick=()=>{const h=Math.max(0,Number($('#free-hour').value)||0);const m=Math.max(0,Math.min(59,Number($('#free-minute').value)||0));if(h===0&&m===0)return;setWalk(h*60+m)}}
      else {destination=b.querySelector('strong')?.textContent||'사범관';setWalk(+b.dataset.min)}
@@ -403,7 +433,6 @@ function clock(){if(!running)updateTimer()}clockId=setInterval(clock,1000);clock
 
 $('#timer-start').onclick=()=>{running=!running;if(running){cat.classList.add('walking');$('#timer-start').textContent='일시정지';clearInterval(clockId);clearInterval(sceneId);sceneId=setInterval(()=>{worldX-=2.8;setWorld(worldX)},50);tickId=setInterval(()=>{if(remaining<=0){finish();return}remaining--;updateTimer()},1000)}else{clearInterval(tickId);clearInterval(sceneId);cat.classList.remove('walking');$('#timer-start').textContent='계속하기'}};
 
-document.addEventListener('click',e=>{if(e.target.id==='walk-test'||e.target.id==='timer-test'){minutes=10/60;remaining=10;running=false;clearInterval(tickId);clearInterval(sceneId);cat.classList.remove('walking','eating');$('#timer-start').textContent='산책 시작';close();updateTimer()}});
 
 function openTodo(){open('✓ 체크리스트',`<div class="todo-add"><input id="todo-input" placeholder="오늘 할 일을 적어보세요"><button id="todo-add">추가</button></div><ul class="todo-list" id="todo-list"></ul>`);renderTodo();$('#todo-add').onclick=addTodo;$('#todo-input').onkeydown=e=>{if(e.key==='Enter')addTodo()}}
 function renderTodo(){const ul=$('#todo-list');if(!ul)return;const ordered=todos.map((t,i)=>({t,i})).sort((a,b)=>Number(a.t.done)-Number(b.t.done));ul.innerHTML=ordered.length?ordered.map(({t,i})=>`<li class="${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} data-done="${i}"><span>${escape(t.text)}</span><button class="mini" data-del="${i}">×</button></li>`).join(''):`<li style="justify-content:center;color:#aaa">아직 할 일이 없어요 🐾</li>`;ul.querySelectorAll('[data-done]').forEach(x=>x.onchange=()=>{todos[x.dataset.done].done=x.checked;store.set('todos',todos);renderTodo()});ul.querySelectorAll('[data-del]').forEach(x=>x.onclick=()=>{todos.splice(x.dataset.del,1);store.set('todos',todos);renderTodo()})}
@@ -592,6 +621,13 @@ function refreshDayUI(){
 function finish(){running=false;clearInterval(tickId);clearInterval(sceneId);cat.classList.remove('walking','eating');$('#timer-start').textContent='산책 시작';store.set('walkCount',store.get('walkCount',0)+1);store.set('todayMin',store.get('todayMin',0)+minutes);$('#timer-label').textContent='도착 완료';$('#timer-time').textContent=destination;clearInterval(clockId);showArrival(destination);clockId=setInterval(clock,1000);setTimeout(()=>{$('#arrival-scene').className=''},4200)}
 function showArrival(name){const scene=$('#arrival-scene');if(!scene)return;scene.className=name==='사범관'?'arrival-sabum':name==='사회과학관'?'arrival-soc':'arrival-art';$('#arrival-building-name').textContent=name;$('#arrival-label').textContent=name+' 도착!';void scene.offsetWidth;scene.classList.add('show')}
 })();
+
+/* 이스터에그: 로고 클릭 → 만든이들 */
+(function(){const ov=document.getElementById('credits-overlay'),logo=document.querySelector('.logo');if(!ov||!logo)return;
+const open=()=>{ov.classList.add('open');ov.setAttribute('aria-hidden','false')},close=()=>{ov.classList.remove('open');ov.setAttribute('aria-hidden','true')};
+logo.addEventListener('click',open);
+ov.addEventListener('click',e=>{if(e.target===ov||e.target.closest('.c-close'))close()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov.classList.contains('open'))close()});})();
 </script>
 </body>
 </html>
